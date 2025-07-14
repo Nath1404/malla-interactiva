@@ -1,6 +1,6 @@
 function toggleMateria(elem) {
   if (elem.classList.contains('bloqueada')) {
-    alert("Debes aprobar la(s) materia(s) previa(s) para cursar esta.");
+    alert("Debes aprobar todas las materias previas para cursar esta.");
     return;
   }
 
@@ -19,22 +19,22 @@ function actualizarDesbloqueos() {
   todas.forEach(materia => {
     if (!materia.classList.contains('bloqueada')) return;
 
-    const id = materia.id;
-    const prerequisitos = obtenerRequisitos(id);
+    const idActual = materia.id;
+    const prerequisitos = encontrarMateriasQueHabilitan(idActual);
 
-    const aprobadas = prerequisitos.filter(pid => {
-      const previa = document.getElementById(pid);
+    const todosAprobados = prerequisitos.every(id => {
+      const previa = document.getElementById(id);
       return previa && previa.classList.contains('aprobada');
     });
 
-    if (aprobadas.length === prerequisitos.length && prerequisitos.length > 0) {
+    if (todosAprobados) {
       materia.classList.remove('bloqueada');
     }
   });
 }
 
-// Encuentra qué materias habilitan a la materia con este id
-function obtenerRequisitos(idMateria) {
+// Esta función devuelve una lista de materias que deben estar aprobadas para desbloquear la actual
+function encontrarMateriasQueHabilitan(idMateria) {
   const todas = document.querySelectorAll('.materia');
   const requisitos = [];
 
