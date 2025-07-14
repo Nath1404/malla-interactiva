@@ -1,11 +1,9 @@
 function toggleMateria(elem) {
-  // Si está bloqueada, no hace nada
   if (elem.classList.contains('bloqueada')) {
     alert("Debes aprobar la(s) materia(s) previa(s) para cursar esta.");
     return;
   }
 
-  // Alternar entre estados (puedes personalizar esto si quieres más pasos)
   if (elem.classList.contains('aprobada')) {
     elem.classList.remove('aprobada');
   } else {
@@ -13,13 +11,11 @@ function toggleMateria(elem) {
     desbloquearCascada(elem);
   }
 
-  // Mostrar información
   if (elem.dataset.info) {
     alert(elem.dataset.info);
   }
 }
 
-// Desbloquea materias dependientes en cascada
 function desbloquearCascada(materia) {
   const dependientes = materia.dataset.habilita;
   if (!dependientes) return;
@@ -28,7 +24,7 @@ function desbloquearCascada(materia) {
     const siguiente = document.getElementById(id.trim());
     if (siguiente && siguiente.classList.contains('bloqueada')) {
       siguiente.classList.remove('bloqueada');
-      desbloquearCascada(siguiente); // Desbloqueo en cadena
+      desbloquearCascada(siguiente); // desbloqueo en cadena
     }
   });
 }
