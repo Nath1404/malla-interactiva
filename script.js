@@ -4,23 +4,42 @@ function toggleMateria(elem) {
     return;
   }
 
-  if (elem.classList.contains('aprobada')) {
+  // Alternar estado de aprobación
+  const yaEstabaAprobada = elem.classList.contains('aprobada');
+
+  if (yaEstabaAprobada) {
     elem.classList.remove('aprobada');
   } else {
     elem.classList.add('aprobada');
   }
 
-  actualizarDesbloqueos();
+  // Recalcular desbloqueos y bloqueos en cascada
+  recalcularMalla();
 }
 
-function actualizarDesbloqueos() {
+function recalcularMalla() {
   const todas = document.querySelectorAll('.materia');
 
+  // Primero, bloquear todo lo que no cumple con sus prerequisitos
   todas.forEach(materia => {
-    if (!materia.classList.contains('bloqueada')) return;
+    const prerequisitos = encontrarMateriasQueHabilitan(materia.id);
+    if (prerequisitos.length === 0) return;
 
-    const idActual = materia.id;
-    const prerequisitos = encontrarMateriasQueHabilitan(idActual);
+    const todosAprobados = prerequisitos.every(id => {
+      const previa = document.getElementById(id);
+      return previa && previa.classList.contains('aprobada');
+    });
+
+    if (!todosAprobados) {
+      materia.classList.add('bloqueada');
+      materia.classList.remove('aprobada'); // Desaprobar si fue desbloqueada antes por error
+    }
+  });
+
+  // Luego, desbloquear las materias que sí cumplen
+  todas.forEach(materia => {
+    const prerequisitos = encontrarMateriasQueHabilitan(materia.id);
+    if (prerequisitos.length === 0) return;
 
     const todosAprobados = prerequisitos.every(id => {
       const previa = document.getElementById(id);
@@ -33,7 +52,6 @@ function actualizarDesbloqueos() {
   });
 }
 
-// Esta función devuelve una lista de materias que deben estar aprobadas para desbloquear la actual
 function encontrarMateriasQueHabilitan(idMateria) {
   const todas = document.querySelectorAll('.materia');
   const requisitos = [];
