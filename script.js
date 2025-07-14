@@ -13,41 +13,40 @@ function toggleMateria(elem) {
   actualizarDesbloqueos();
 }
 
-// Desbloquea solo materias cuyas prerequisitos están 100% aprobadas
 function actualizarDesbloqueos() {
-  const materias = document.querySelectorAll('.materia');
+  const todas = document.querySelectorAll('.materia');
 
-  materias.forEach(materia => {
-    const prerequisitos = obtenerPrerequisitos(materia);
+  todas.forEach(materia => {
+    if (!materia.classList.contains('bloqueada')) return;
 
-    if (prerequisitos.length === 0) return; // No tiene prerequisitos
+    const id = materia.id;
+    const prerequisitos = obtenerRequisitos(id);
 
-    const todosAprobados = prerequisitos.every(id => {
-      const previa = document.getElementById(id);
+    const aprobadas = prerequisitos.filter(pid => {
+      const previa = document.getElementById(pid);
       return previa && previa.classList.contains('aprobada');
     });
 
-    if (todosAprobados) {
+    if (aprobadas.length === prerequisitos.length && prerequisitos.length > 0) {
       materia.classList.remove('bloqueada');
     }
   });
 }
 
-// Revisa en qué materias figura como habilitada esta
-function obtenerPrerequisitos(materia) {
+// Encuentra qué materias habilitan a la materia con este id
+function obtenerRequisitos(idMateria) {
   const todas = document.querySelectorAll('.materia');
-  const idActual = materia.id;
-  const prerequisitos = [];
+  const requisitos = [];
 
-  todas.forEach(otra => {
-    const habilita = otra.dataset.habilita;
-    if (habilita) {
-      const ids = habilita.split(',').map(s => s.trim());
-      if (ids.includes(idActual)) {
-        prerequisitos.push(otra.id);
-      }
+  todas.forEach(materia => {
+    const habilita = materia.dataset.habilita;
+    if (!habilita) return;
+
+    const ids = habilita.split(',').map(s => s.trim());
+    if (ids.includes(idMateria)) {
+      requisitos.push(materia.id);
     }
   });
 
-  return prerequisitos;
+  return requisitos;
 }
