@@ -51,3 +51,7 @@ h1 {
 .cadena-blandas { background: #f39c12; }
 .cadena-comunicacion { background: #d35400; }
 .cadena-estadistica { background: #2ecc71; }
+.materia.aprobada {
+  background-color: #2e7d32 !important; /* Verde oscuro */
+  opacity: 0.9;
+}
