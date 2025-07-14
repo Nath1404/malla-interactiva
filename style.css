@@ -1,0 +1,53 @@
+
+body {
+  font-family: sans-serif;
+  background: #d6eaf8;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+h1 {
+  margin-top: 20px;
+  color: #1b4f72;
+}
+.malla {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 20px;
+  gap: 20px;
+}
+.semestre {
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  min-width: 200px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.semestre h2 {
+  color: #154360;
+}
+.materia {
+  margin: 6px 0;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+}
+.materia.bloqueada {
+  background: #aab7b8;
+  cursor: not-allowed;
+}
+.materia.aprobada {
+  border: 2px solid white;
+}
+
+/* Colores por cadena */
+.cadena-matematicas { background: #3498db; }
+.cadena-fisica { background: #1abc9c; }
+.cadena-diseno { background: #9b59b6; }
+.cadena-ingles { background: #e67e22; }
+.cadena-blandas { background: #f39c12; }
+.cadena-comunicacion { background: #d35400; }
+.cadena-estadistica { background: #2ecc71; }
